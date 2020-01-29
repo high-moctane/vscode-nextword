@@ -1,14 +1,32 @@
 {
 	"name": "nextword",
-	"displayName": "nextword",
+	"displayName": "Nextword",
 	"description": "Nextword English completion",
 	"version": "0.0.1",
+	"publisher": "high-moctane",
+	"license": "MIT",
+	"icon": "images/logo.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/high-moctane/vscode-nextword.git"
+	},
+	"bugs": {
+		"url": "https://github.com/high-moctane/vscode-nextword/issues"
+	},
+	"homepage": "https://github.com/high-moctane/vscode-nextword/blob/master/README.md",
 	"engines": {
 		"vscode": "^1.41.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"keywords": [
+		"nextword",
+		"English",
+		"completion",
+		"Intellisense"
+	],
+	"preview": true,
 	"activationEvents": [
 		"*"
 	],
