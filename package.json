@@ -1,7 +1,7 @@
 {
 	"name": "nextword",
 	"displayName": "nextword",
-	"description": "Suggest next English words.",
+	"description": "Nextword English completion",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.41.0"
@@ -10,17 +10,10 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
+	"contributes": {},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",

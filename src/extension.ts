@@ -1,27 +1,67 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as child_process from 'child_process';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+class Nextword {
+	available: boolean; // on error, available will be false.
+	candidateNum: number;
+	inputTrimLen: number;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "nextword" is now active!');
+	constructor() {
+		this.available = true;
+		this.inputTrimLen = 1000;
+		this.candidateNum = 5;
+	}
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+	// provider provides completion items.
+	provider(): vscode.Disposable {
+		let prov = this;
+		return vscode.languages.registerCompletionItemProvider(
+			'*',
+			{
+				provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
+					if (!prov.available) {
+						return new vscode.CompletionList([], false);
+					}
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
+					let input = document
+						.getText(new vscode.Range(new vscode.Position(Math.max(0, position.line - 4), 0), position))
+						.replace(/\s/g, " ")
+						.slice(-prov.inputTrimLen);
 
-	context.subscriptions.push(disposable);
+					var output = "";
+					try {
+						output = child_process.execSync("nextword", { input: input }).toString();
+					} catch (e) {
+						console.log("nextword error:", e);
+						vscode.window.showErrorMessage("nextword error:" + String(e));
+						prov.available = false;
+						return new vscode.CompletionList([], false);
+					}
+
+					if (output === "\n") {
+						return new vscode.CompletionList([], false);
+					}
+
+					const res = output
+						.trim()
+						.split(" ")
+						.slice(0, prov.candidateNum)
+						.map(word => new vscode.CompletionItem(word, vscode.CompletionItemKind.Text));
+
+					return res;
+				}
+			},
+			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+			"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+			"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+			" ",
+		);
+	}
+
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+export function activate(context: vscode.ExtensionContext) {
+	let nextword = new Nextword();
+	context.subscriptions.push(nextword.provider());
+}
