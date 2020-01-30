@@ -4,9 +4,10 @@ Nextword English completion.
 
 ## Features
 
-Nextword suggests next English words. This extension helps your English input.
-
 ![screenshot](images/screenshot.gif)
+
+- Display correct spellings.
+- Predict next English words from the input sentence.
 
 ## Requirements
 
