@@ -18,6 +18,10 @@ Please make sure that the nextword command can be used beforehand.
 
 ## Release Notes
 
+### 0.1.1
+
+Update dependencies.
+
 ### 0.0.1
 
 Initial release.
